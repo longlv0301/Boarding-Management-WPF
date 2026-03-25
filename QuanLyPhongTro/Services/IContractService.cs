@@ -17,6 +17,6 @@ namespace QuanLyPhongTro.Services
         bool CreateContract(Contract contract, out string errorMessage);
         
         // Nghiệp vụ thanh lý/ kết thúc hợp đồng
-        bool TerminalContract(int contractId, out string errorMessage);
+        bool TerminateContract(int contractId, out string errorMessage);
     }
 }

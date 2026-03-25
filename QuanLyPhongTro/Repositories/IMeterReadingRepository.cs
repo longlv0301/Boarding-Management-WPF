@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace QuanLyPhongTro.Repositories
 {
-    public interface IMeterReadingRepositpry : IRepository<MeterReading>
+    public interface IMeterReadingRepository : IRepository<MeterReading>
     {
         // Kiểm tra xem phòng đã chốt điện nước trong tháng/ năm này chưa
         MeterReading GetMeterReadingByPeriod(int roomId, int month,  int year);

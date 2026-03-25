@@ -10,10 +10,10 @@ namespace QuanLyPhongTro.Services
 {
     public class MeterReadingService : IMeterReadingService
     {
-        private readonly IMeterReadingRepositpry _meterReadingRepository;
+        private readonly IMeterReadingRepository _meterReadingRepository;
         private readonly IRoomRepository _roomRepository; // Để kiểm tra phòng tồn tại không
 
-        public MeterReadingService(IMeterReadingRepositpry meterReadingRepository, IRoomRepository roomRepository)
+        public MeterReadingService(IMeterReadingRepository meterReadingRepository, IRoomRepository roomRepository)
         {
             _meterReadingRepository = meterReadingRepository;
             _roomRepository = roomRepository;

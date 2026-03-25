@@ -12,9 +12,9 @@ namespace QuanLyPhongTro.Services
     {
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly IRoomRepository _roomRepository;
-        private readonly IMeterReadingRepositpry _meterReadingRepository;
+        private readonly IMeterReadingRepository _meterReadingRepository;
 
-        public InvoiceService(IInvoiceRepository invoiceRepository, IRoomRepository roomRepository, IMeterReadingRepositpry meterReadingRepository)
+        public InvoiceService(IInvoiceRepository invoiceRepository, IRoomRepository roomRepository, IMeterReadingRepository meterReadingRepository)
         {
             _invoiceRepository = invoiceRepository;
             _roomRepository = roomRepository;
@@ -50,7 +50,7 @@ namespace QuanLyPhongTro.Services
             
             // Kéo thông tin phòng lên để lấy giá thuê gốc
             var room = _roomRepository.GetById(roomId);
-            if(room != null)
+            if(room == null)
             {
                 errorMessage = "Không tìm thấy phòng!";
                 return false;

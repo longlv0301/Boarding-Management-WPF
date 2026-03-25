@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace QuanLyPhongTro.Services
 {
-    public class ContractService
+    public class ContractService : IContractService
     {
         private readonly IContractRepository _contractRepository;
         private readonly IRoomRepository _roomRepository;
@@ -52,7 +52,7 @@ namespace QuanLyPhongTro.Services
             }
 
             // Lấy thông tin phòng lên để kiểm tra
-            var room = _roomRepository.GetById(contract.Id);
+            var room = _roomRepository.GetById(contract.RoomId);
             if(room == null)
             {
                 errorMessage = "Phòng không tồn tại";
@@ -76,7 +76,7 @@ namespace QuanLyPhongTro.Services
             return true;
         }
 
-        public bool TerminalContract(int contractId, out string errorMessage)
+        public bool TerminateContract(int contractId, out string errorMessage)
         {
             errorMessage = string.Empty;
 

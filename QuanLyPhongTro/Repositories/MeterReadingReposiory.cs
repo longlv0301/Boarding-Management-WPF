@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace QuanLyPhongTro.Repositories
 {
-    public class MeterReadingReposiory : RepositoryBase<MeterReading>, IMeterReadingRepositpry
+    public class MeterReadingReposiory : RepositoryBase<MeterReading>, IMeterReadingRepository
     {
         public MeterReadingReposiory(AppDbContext context) : base(context) { }
 
