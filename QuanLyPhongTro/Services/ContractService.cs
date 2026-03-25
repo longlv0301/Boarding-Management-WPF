@@ -12,11 +12,13 @@ namespace QuanLyPhongTro.Services
     {
         private readonly IContractRepository _contractRepository;
         private readonly IRoomRepository _roomRepository;
+        private readonly ITenantRepository _tenantRepository;
 
-        public ContractService(IContractRepository contractRepository, IRoomRepository roomRepository)
+        public ContractService(IContractRepository contractRepository, IRoomRepository roomRepository, ITenantRepository tenantRepository)
         {
             _contractRepository = contractRepository;
             _roomRepository = roomRepository;
+            _tenantRepository = tenantRepository;
         }
 
         public IEnumerable<Contract> GetAllContracts()
@@ -65,6 +67,25 @@ namespace QuanLyPhongTro.Services
                 errorMessage = $"Phòng {room.Name} hiện đang không trống. Không thể lập hợp đồng";
                 return false;
             }
+
+            var tenant = _tenantRepository.GetById(contract.TenantId);
+            if(tenant == null)
+            {
+                errorMessage = "Không tìm thấy khách thuê!";
+                return false;
+            }
+
+            contract.Occupants = new List<Occupant>()
+            {
+                new Occupant
+                {
+                    FullName = tenant.FullName,
+                    IdentifyCard = tenant.IdentityCard,
+                    PhoneNumber = tenant.PhoneNumber,
+                    LicensePlate = "",
+                    IsContractOwner = true
+                }
+            };
 
             contract.IsActive = true;
             _contractRepository.Add(contract);
