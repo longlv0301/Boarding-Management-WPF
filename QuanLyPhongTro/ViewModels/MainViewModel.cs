@@ -37,6 +37,7 @@ namespace QuanLyPhongTro.ViewModels
         private readonly ITenantService _tenantService;
         private readonly IContractService _contractService;
         private readonly IInvoiceService _invoiceService;
+        private readonly IOccupantService _occupantService;
 
         public ICommand ShowRoomCommand { get; }
         public ICommand ShowTenantCommand { get; }
@@ -51,12 +52,14 @@ namespace QuanLyPhongTro.ViewModels
             ITenantService tenantService,
             IContractService contractService,
             IInvoiceService invoiceService,
+            IOccupantService occupantService,
             User loggedInUser)
         {
             _roomService = roomService;
             _tenantService = tenantService;
             _contractService = contractService;
             _invoiceService = invoiceService;
+            _occupantService = occupantService;
 
             CurrentUser = loggedInUser;
 
@@ -77,24 +80,22 @@ namespace QuanLyPhongTro.ViewModels
 
         private void ExecuteShowTenant(object obj)
         {
-            // CurrentViewModel = new TenantViewModel(_tenantService); 
+            CurrentViewModel = new TenantViewModel(_tenantService);
         }
 
         private void ExecuteShowContract(object obj)
         {
-            // CurrentViewModel = new ContractViewModel(_contractService);
+            CurrentViewModel = new ContractViewModel(_contractService, _roomService, _tenantService, _occupantService);
         }
 
         private void ExecuteShowInvoice(object obj)
         {
-            // CurrentViewModel = new InvoiceViewModel(_invoiceService);
+            CurrentViewModel = new InvoiceViewModel(_invoiceService, _roomService);
         }
 
         // --- 7. LOGIC ĐĂNG XUẤT ---
         private void ExecuteLogout(object obj)
         {
-            // MVVM Chuẩn: ViewModel không tự tắt cửa sổ được (vì nó không biết View là gì).
-            // Nên nó sẽ "hét lên" (Invoke) một sự kiện. File XAML nào đang chứa nó sẽ nghe thấy và tự đóng lại.
             OnLogoutRequested?.Invoke();
         }
 

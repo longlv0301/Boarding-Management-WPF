@@ -14,7 +14,7 @@ namespace QuanLyPhongTro.Repositories
         
         public User GetByUsername(string username)
         {
-            return _dbSet.FirstOrDefault(u => u.Username.ToLower() == username.ToLower());
+            return _dbSet.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
         }
 
         public int GetTotalUsersCount()
