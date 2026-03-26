@@ -21,7 +21,7 @@ namespace QuanLyPhongTro.Repositories
         {
             return _dbSet
                 .Include(c => c.Room)
-                .Include(c => c.TenantId)
+                .Include(c => c.Tenant)
                 .Include(c => c.Occupants)
                 .FirstOrDefault(c => c.Id == id);
         }
