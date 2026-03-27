@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace QuanLyPhongTro.Repositories
 {
-    public class MeterReadingReposiory : RepositoryBase<MeterReading>, IMeterReadingRepository
+    public class MeterReadingRepository : RepositoryBase<MeterReading>, IMeterReadingRepository
     {
-        public MeterReadingReposiory(AppDbContext context) : base(context) { }
+        public MeterReadingRepository(AppDbContext context) : base(context) { }
 
         public MeterReading GetMeterReadingByPeriod(int roomId, int month, int year)
         {

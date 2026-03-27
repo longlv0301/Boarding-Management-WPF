@@ -10,11 +10,11 @@ namespace QuanLyPhongTro.Repositories
 {
     public class UserRepository : RepositoryBase<User>, IUserRepository
     {
-        public UserRepository(AppDbContext context) : base(context) { } 
-        
+        public UserRepository(AppDbContext context) : base(context) { }
+
         public User GetByUsername(string username)
         {
-            return _dbSet.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+            return _dbSet.FirstOrDefault(u => u.Username.ToLower() == username.ToLower());
         }
 
         public int GetTotalUsersCount()

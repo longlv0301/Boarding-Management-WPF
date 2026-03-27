@@ -1,0 +1,101 @@
+﻿<UserControl x:Class="QuanLyPhongTro.Views.RoomView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+
+    <Grid Margin="0,0,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="320"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Background="White" CornerRadius="10" Padding="20" Margin="0,0,20,0" 
+                BorderBrush="#E5E7EB" BorderThickness="1">
+            <StackPanel>
+                <TextBlock Text="THÔNG TIN PHÒNG" FontSize="20" FontWeight="Bold" Foreground="#1F2937" Margin="0,0,0,25"/>
+
+                <TextBlock Text="Tên / Số phòng:" FontWeight="SemiBold" Foreground="#4B5563" Margin="0,0,0,5"/>
+                <TextBox Text="{Binding RoomName, UpdateSourceTrigger=PropertyChanged}" 
+                         Height="40" Padding="10,0" VerticalContentAlignment="Center" BorderBrush="#D1D5DB" Margin="0,0,0,15"/>
+
+                <TextBlock Text="Giá thuê (VNĐ):" FontWeight="SemiBold" Foreground="#4B5563" Margin="0,0,0,5"/>
+                <TextBox Text="{Binding BasePrice, UpdateSourceTrigger=PropertyChanged}" 
+                         Height="40" Padding="10,0" VerticalContentAlignment="Center" BorderBrush="#D1D5DB" Margin="0,0,0,15"/>
+
+                <TextBlock Text="Số người tối đa:" FontWeight="SemiBold" Foreground="#4B5563" Margin="0,0,0,5"/>
+                <TextBox Text="{Binding MaxOccupants, UpdateSourceTrigger=PropertyChanged}" 
+                         Height="40" Padding="10,0" VerticalContentAlignment="Center" BorderBrush="#D1D5DB" Margin="0,0,0,25"/>
+
+                <UniformGrid Columns="2" Rows="2" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                    <Button Content="Thêm mới" Command="{Binding AddCommand}" 
+                            Height="40" Background="#10B981" Foreground="White" FontWeight="Bold" Margin="0,0,5,10" BorderThickness="0" Cursor="Hand"/>
+
+                    <Button Content="Cập nhật" Command="{Binding UpdateCommand}" 
+                            Height="40" Background="#3B82F6" Foreground="White" FontWeight="Bold" Margin="5,0,0,10" BorderThickness="0" Cursor="Hand"/>
+                </UniformGrid>
+
+                <Button Content="Làm mới Form" Command="{Binding ClearFormCommand}" 
+                        Height="40" Background="#9CA3AF" Foreground="White" FontWeight="Bold" BorderThickness="0" Cursor="Hand"/>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Column="1" Background="White" CornerRadius="10" Padding="20" 
+                BorderBrush="#E5E7EB" BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="0,0,0,15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="130"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="DANH SÁCH PHÒNG TRỌ" FontSize="20" FontWeight="Bold" Foreground="#1F2937" VerticalAlignment="Center"/>
+
+                    <TextBox Grid.Column="2" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
+             Height="35" Padding="10,0" VerticalContentAlignment="Center" BorderBrush="#D1D5DB" Margin="0,0,10,0"/>
+
+                    <TextBlock Grid.Column="2" Text="🔍 Nhập tên phòng..." Foreground="#9CA3AF" VerticalAlignment="Center" Margin="10,0,0,0" IsHitTestVisible="False">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SearchText}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SearchText}" Value="">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
+                    <ComboBox Grid.Column="3" ItemsSource="{Binding FilterOptions}" SelectedItem="{Binding SelectedFilter}" 
+              Height="35" VerticalContentAlignment="Center" Padding="10,0,0,0" BorderBrush="#D1D5DB" Background="White"/>
+                </Grid>
+
+                <DataGrid Grid.Row="1" ItemsSource="{Binding Rooms}" SelectedItem="{Binding SelectedRoom}" 
+                          AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                          Background="White" RowHeight="40" ColumnHeaderHeight="45" BorderBrush="#E5E7EB">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Phòng" Binding="{Binding Name}" Width="*"/>
+
+                        <DataGridTextColumn Header="Giá thuê" Binding="{Binding BasePrice, StringFormat=\{0:N0\} VNĐ}" Width="*"/>
+
+                        <DataGridTextColumn Header="Sức chứa" Binding="{Binding MaxOccupants, StringFormat=\{0\} người}" Width="0.8*"/>
+
+                        <DataGridTextColumn Header="Trạng thái" Binding="{Binding Status}" Width="*"/>
+                    </DataGrid.Columns>
+
+                </DataGrid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

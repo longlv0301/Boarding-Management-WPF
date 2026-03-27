@@ -42,10 +42,10 @@
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Fullname}" Value="{x:Null}">
+                                        <DataTrigger Binding="{Binding FullName}" Value="{x:Null}">
                                             <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding Fullname}" Value="">
+                                        <DataTrigger Binding="{Binding FullName}" Value="">
                                             <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -59,7 +59,7 @@
 
                 <Grid Margin="0,0,0,20">
                     <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" 
-             Height="45" Padding="15,0" VerticalContentAlignment="Center" BorderBrush="#D1D5DB" FontSize="14" />
+                      Height="45" Padding="15,0" VerticalContentAlignment="Center"  BorderBrush="#D1D5DB" FontSize="14"/>
 
                     <TextBlock Text="Username" Foreground="#9CA3AF" FontSize="14" 
                VerticalAlignment="Center" Margin="17,0,0,0" IsHitTestVisible="False">

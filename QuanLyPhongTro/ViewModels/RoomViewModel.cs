@@ -15,6 +15,7 @@ namespace QuanLyPhongTro.ViewModels
     public class RoomViewModel : ViewModelBase
     {
         private readonly IRoomService _roomService;
+        private List<Room> _allRooms;
 
         // Danh sách hiển thị trên bảng
         private ObservableCollection<Room> _rooms;
@@ -65,6 +66,32 @@ namespace QuanLyPhongTro.ViewModels
             }
         }
 
+        private string _searchText;
+        public string SearchText
+        {
+            get { return _searchText; }
+            set
+            {
+                _searchText = value;
+                OnPropertyChanged();
+                ApplyFilter(); // Gõ chữ nào, tự động lọc chữ đó
+            }
+        }
+
+        private string _selectedFilter;
+        public string SelectedFilter
+        {
+            get { return _selectedFilter; }
+            set
+            {
+                _selectedFilter = value;
+                OnPropertyChanged();
+                ApplyFilter(); // Chọn trạng thái nào, lọc ngay trạng thái đó
+            }
+        }
+
+        public List<string> FilterOptions { get; } = new List<string> { "Tất cả", "Phòng trống", "Đã thuê" };
+
         // Comands
         public ICommand AddCommand { get; }
         public ICommand UpdateCommand { get; }
@@ -73,6 +100,7 @@ namespace QuanLyPhongTro.ViewModels
         public RoomViewModel(IRoomService roomService)
         {
             _roomService = roomService;
+            _selectedFilter = "Tất cả";
 
             AddCommand = new RelayCommand(ExecuteAdd, CanExecuteAdd);
             UpdateCommand = new RelayCommand(ExecuteUpdate, CanExecuteUpdate);
@@ -83,8 +111,34 @@ namespace QuanLyPhongTro.ViewModels
 
         public void LoadRooms()
         {
-            var data = _roomService.GetAllRooms();
-            Rooms = new ObservableCollection<Room>(data);
+            _allRooms = _roomService.GetAllRooms().ToList();
+
+            ApplyFilter();
+        }
+
+        private void ApplyFilter()
+        {
+            if (_allRooms == null) return;
+
+            var filteredList = _allRooms.AsEnumerable();
+
+            // Tìm theo Tên phòng 
+            if (!string.IsNullOrWhiteSpace(SearchText))
+            {
+                filteredList = filteredList.Where(r => r.Name.ToLower().Contains(SearchText.ToLower()));
+            }
+
+            // Tìm theo Trạng thái
+            if (SelectedFilter == "Phòng trống")
+            {
+                filteredList = filteredList.Where(r => r.Status == RoomStatus.Available);
+            }
+            else if (SelectedFilter == "Đã thuê")
+            {
+                filteredList = filteredList.Where(r => r.Status == RoomStatus.Rented);
+            }
+
+            Rooms = new ObservableCollection<Room>(filteredList);
         }
 
         // Logic cho nút thêm
