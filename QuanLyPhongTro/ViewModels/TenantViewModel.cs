@@ -16,6 +16,8 @@ namespace QuanLyPhongTro.ViewModels
     {
         private readonly ITenantService _tenantService;
 
+        private List<Tenant> _allTenants;
+
         private ObservableCollection<Tenant> _tenants;
         public ObservableCollection<Tenant> Tenants
         {
@@ -24,13 +26,13 @@ namespace QuanLyPhongTro.ViewModels
         }
 
         private string _fullName;
-        private string FullName
+        public string FullName
         {
             get { return _fullName; }
             set { _fullName = value; OnPropertyChanged(); }
         }
 
-        private string _identityCard; // Số CCCD / CMND
+        private string _identityCard; // Số CCCD 
         public string IdentityCard
         {
             get { return _identityCard; }
@@ -68,6 +70,18 @@ namespace QuanLyPhongTro.ViewModels
             }
         }
 
+        private string _searchText;
+        public string SearchText
+        {
+            get { return _searchText; }
+            set
+            {
+                _searchText = value;
+                OnPropertyChanged();
+                ApplyFilter();
+            }
+        }
+
         public ICommand AddCommand { get; }
         public ICommand UpdateCommand { get; }
         public ICommand ClearFormCommand { get; }
@@ -85,15 +99,32 @@ namespace QuanLyPhongTro.ViewModels
 
         public void LoadTenants()
         {
-            var data = _tenantService.GetAllTenants();
-            Tenants = new ObservableCollection<Tenant>(data);
+            _allTenants = _tenantService.GetAllTenants().ToList();
+            ApplyFilter();
+        }
+
+        private void ApplyFilter()
+        {
+            if (_allTenants == null) return;
+
+            var filteredList = _allTenants.AsEnumerable();
+
+            if (!string.IsNullOrWhiteSpace(SearchText))
+            {
+                string searchLower = SearchText.ToLower();
+                filteredList = filteredList.Where(t => (t.FullName != null && t.FullName.ToLower().Contains(searchLower)) ||
+                                                       (t.PhoneNumber != null && t.PhoneNumber.Contains(searchLower))
+                );
+            }
+            Tenants = new ObservableCollection<Tenant>(filteredList);
         }
 
         private bool CanExecuteAdd(object obj)
         {
             return !string.IsNullOrWhiteSpace(FullName) &&
                    !string.IsNullOrWhiteSpace(IdentityCard) &&
-                   !string.IsNullOrWhiteSpace(PhoneNumber);
+                   !string.IsNullOrWhiteSpace(PhoneNumber) &&
+                   !string.IsNullOrWhiteSpace(Address);
         }
 
         private void ExecuteAdd(object obj)
@@ -125,7 +156,8 @@ namespace QuanLyPhongTro.ViewModels
             return SelectedTenant != null &&
                    !string.IsNullOrWhiteSpace(FullName) &&
                    !string.IsNullOrWhiteSpace(IdentityCard) &&
-                   !string.IsNullOrWhiteSpace(PhoneNumber);
+                   !string.IsNullOrWhiteSpace(PhoneNumber) &&
+                   !string.IsNullOrWhiteSpace(Address);
         }
 
         private void ExecuteUpdate(object obj)
