@@ -35,16 +35,72 @@
                     </StackPanel.Style>
 
                     <TextBlock Text="Create Initial Admin:" Foreground="#10B981" FontWeight="Bold" Margin="0,0,0,10"/>
-                    <TextBox Text="{Binding FullName}" Height="45" Padding="15,0" Margin="0,0,0,15" VerticalContentAlignment="Center" BorderBrush="#D1D5DB" FontSize="14"/>
+                    <Grid Margin="0,0,0,20">
+                        <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Height="45" Padding="15,0" Margin="0,0,0,15" VerticalContentAlignment="Center" BorderBrush="#D1D5D8" FontSize="14"/>
+                        <TextBlock Text="Fullname" Foreground="#9CA3AF" FontSize="14" VerticalAlignment="Center" Margin="17,0,0,0" IsHitTestVisible="False">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Fullname}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Fullname}" Value="">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
                     
+
                 </StackPanel>
 
-                <TextBox Text="{Binding Username}" Height="45" Padding="15,0" Margin="0,0,0,20" 
-                         VerticalContentAlignment="Center" BorderBrush="#D1D5DB" FontSize="14" />
+                <Grid Margin="0,0,0,20">
+                    <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" 
+             Height="45" Padding="15,0" VerticalContentAlignment="Center" BorderBrush="#D1D5DB" FontSize="14" />
 
-                <PasswordBox x:Name="txtPassword" Height="45" Padding="15,0" Margin="0,0,0,30" 
-                             VerticalContentAlignment="Center" BorderBrush="#D1D5DB" FontSize="14"/>
-            
+                    <TextBlock Text="Username" Foreground="#9CA3AF" FontSize="14" 
+               VerticalAlignment="Center" Margin="17,0,0,0" IsHitTestVisible="False">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Username}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Username}" Value="">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+
+                <Grid Margin="0,0,0,30">
+                    <PasswordBox x:Name="txtPassword" PasswordChanged="txtPassword_PasswordChanged" 
+                 Height="45" Padding="15,0" VerticalContentAlignment="Center" BorderBrush="#D1D5DB" FontSize="14"/>
+
+                    <TextBlock Text="Password" Foreground="#9CA3AF" FontSize="14" 
+               VerticalAlignment="Center" Margin="17,0,0,0" IsHitTestVisible="False">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Password}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Password}" Value="">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+
                 <Button Content="Create Admin Account" Command="{Binding CreateAdminCommand}" 
                         Height="45" Background="#10B981" Foreground="White" FontWeight="Bold" BorderThickness="0" Cursor="Hand" Margin="0,0,0,20">
                     <Button.Style>
@@ -60,7 +116,7 @@
                 </Button>
 
                 <Button Content="Sign In" Command="{Binding LoginCommand}" 
-                        Height="45" Background="#3B82F6" Foreground="White" FontWeight="Bold" BorderThickness="0" Cursor="Hand" Margin="0,0,0,20">
+                        Height="45" Background="Gray" Foreground="White" FontWeight="Bold" BorderThickness="0" Cursor="Hand" Margin="0,0,0,20">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Visibility" Value="Collapsed"/>

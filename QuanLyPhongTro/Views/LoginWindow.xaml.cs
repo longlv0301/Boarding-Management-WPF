@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuanLyPhongTro.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,15 @@ namespace QuanLyPhongTro.Views
         public LoginWindow()
         {
             InitializeComponent();
+        }
+        private void txtPassword_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            // Kiểm tra xem giao diện này đã được gắn LoginViewModel chưa
+            if (this.DataContext is LoginViewModel vm)
+            {
+                // Ép mật khẩu từ XAML đẩy thẳng xuống biến Password của ViewModel
+                vm.Password = txtPassword.Password;
+            }
         }
     }
 }
