@@ -43,5 +43,10 @@ namespace QuanLyPhongTro.Repositories
                 .Include(i => i.Room)
                 .FirstOrDefault(i => i.Id == invoiceId);
         }
+
+        public IEnumerable<Invoice> GetAllInvoicesWithDetails()
+        {
+            return _dbSet.Include(i => i.Room).ToList();
+        }
     }
 }

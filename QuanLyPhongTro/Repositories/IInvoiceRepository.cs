@@ -23,5 +23,7 @@ namespace QuanLyPhongTro.Repositories
 
         // Lấy chi tiết một hóa đơn kèm theo thông tin của phòng
         Invoice GetInvoiceWithDetails(int invoiceId);
+
+        IEnumerable<Invoice> GetAllInvoicesWithDetails();
     }
 }

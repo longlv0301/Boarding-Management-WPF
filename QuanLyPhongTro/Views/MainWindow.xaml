@@ -14,6 +14,15 @@
         <DataTemplate DataType="{x:Type viewmodels:TenantViewModel}">
             <local:TenantView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:ContractViewModel}">
+            <local:ContractView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:InvoiceViewModel}">
+            <local:InvoiceView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:MeterReadingViewModel}">
+            <local:MeterReadingView />
+        </DataTemplate>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -32,6 +41,7 @@
                 <Button Content="KHÁCH THUÊ" Command="{Binding ShowTenantCommand}" Background="LightGray" BorderThickness="0" FontSize="15" Padding="20,15" HorizontalContentAlignment="Left" Cursor="Hand"/>
                 <Button Content="HỢP ĐỒNG" Command="{Binding ShowContractCommand}" Background="LightGray" BorderThickness="0" FontSize="15" Padding="20,15" HorizontalContentAlignment="Left" Cursor="Hand"/>
                 <Button Content="HÓA ĐƠN" Command="{Binding ShowInvoiceCommand}" Background="LightGray" BorderThickness="0" FontSize="15" Padding="20,15" HorizontalContentAlignment="Left"/>
+                <Button Content="CHỐT ĐIỆN NƯỚC" Command="{Binding ShowMeterReadingCommand}" Background="LightGray" BorderThickness="0" FontSize="15" Padding="20,15" HorizontalContentAlignment="Left"/>
             </StackPanel>
         </Border>
 

@@ -82,7 +82,7 @@ namespace QuanLyPhongTro.Services
                     FullName = tenant.FullName,
                     IdentifyCard = tenant.IdentityCard,
                     PhoneNumber = tenant.PhoneNumber,
-                    LicensePlate = "",
+                    LicensePlate = tenant.LicensePlate,
                     IsContractOwner = true
                 }
             };

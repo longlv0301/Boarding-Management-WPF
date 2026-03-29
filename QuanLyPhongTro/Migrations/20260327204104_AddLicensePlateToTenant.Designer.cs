@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuanLyPhongTro.Data;
 
@@ -10,9 +11,11 @@ using QuanLyPhongTro.Data;
 namespace QuanLyPhongTro.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260327204104_AddLicensePlateToTenant")]
+    partial class AddLicensePlateToTenant
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.14");
@@ -200,9 +203,6 @@ namespace QuanLyPhongTro.Migrations
                     b.Property<string>("IdentityCard")
                         .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsContractOwner")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("LicensePlate")
                         .IsRequired()

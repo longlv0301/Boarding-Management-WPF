@@ -71,7 +71,6 @@ namespace QuanLyPhongTro.ViewModels
             set { _otherFees = value; OnPropertyChanged(); }
         }
 
-        // BIẾN LƯU HÓA ĐƠN ĐANG ĐƯỢC CHỌN TRÊN BẢNG (Để thanh toán)
         private Invoice _selectedInvoice;
         public Invoice SelectedInvoice
         {
@@ -81,6 +80,7 @@ namespace QuanLyPhongTro.ViewModels
 
         public ICommand CreateInvoiceCommand { get; }
         public ICommand PayInvoiceCommand { get; }
+        public ICommand DeleteInvoiceCommand { get; }
 
         public InvoiceViewModel(IInvoiceService invoiceService, IRoomService roomService)
         {
@@ -89,6 +89,7 @@ namespace QuanLyPhongTro.ViewModels
 
             CreateInvoiceCommand = new RelayCommand(ExecuteCreateInvoice, CanExecuteCreateInvoice);
             PayInvoiceCommand = new RelayCommand(ExecutePayInvoice, CanExecutePayInvoice);
+            DeleteInvoiceCommand = new RelayCommand(ExecuteDeleteInvoice, CanExecuteDeleteInvoice);
 
             LoadData();
         }
@@ -128,7 +129,7 @@ namespace QuanLyPhongTro.ViewModels
             if (isSuccess)
             {
                 MessageBox.Show($"Tạo hóa đơn tháng {SelectedMonth}/{SelectedYear} thành công!", "Thông báo");
-                LoadData(); // Tải lại bảng để thấy hóa đơn vừa tạo
+                LoadData(); 
                 ClearForm();
             }
             else
@@ -155,7 +156,7 @@ namespace QuanLyPhongTro.ViewModels
                 if (isSuccess)
                 {
                     MessageBox.Show("Thanh toán thành công!", "Thông báo");
-                    LoadData(); // Cập nhật lại trạng thái IsPaid trên DataGrid
+                    LoadData(); 
                 }
                 else
                 {
@@ -163,11 +164,29 @@ namespace QuanLyPhongTro.ViewModels
                 }
             }
         }
-
+        private bool CanExecuteDeleteInvoice(object obj)
+        {
+            return SelectedInvoice != null && !SelectedInvoice.IsPaid;
+        }
+        private void ExecuteDeleteInvoice(object obj)
+        {
+            var confirm = MessageBox.Show($"Xóa Hóa đơn tháng {SelectedInvoice.Month}/{SelectedInvoice.Year} của {SelectedInvoice.Room.Name}?", "Xác nhận Xóa", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (confirm == MessageBoxResult.Yes)
+            {
+                if (_invoiceService.DeleteInvoice(SelectedInvoice.Id, out string error))
+                {
+                    MessageBox.Show("Xóa Hóa đơn thành công! Bây giờ bạn có thể đi sửa số Điện/Nước.", "Thông báo");
+                    LoadData(); // Load lại bảng
+                }
+                else
+                {
+                    MessageBox.Show(error, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
         private void ClearForm()
         {
             SelectedRoom = null;
-            // Giữ nguyên tháng, năm, đơn giá điện nước để người dùng tiện lập cho phòng tiếp theo
             OtherFees = 0;
         }
     }

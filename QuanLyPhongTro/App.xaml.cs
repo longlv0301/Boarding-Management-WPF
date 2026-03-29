@@ -29,6 +29,7 @@ namespace QuanLyPhongTro
             var occupantService = new OccupantService(occupantRepository, contractRepository);
             var contractService = new ContractService(contractRepository, roomRepository, tenantRepository);
             var invoiceService = new InvoiceService(invoiceRepository, roomRepository, meterReadingRepository);
+            var meterReadingService = new MeterReadingService(meterReadingRepository, roomRepository, invoiceRepository);
 
             var loginViewModel = new LoginViewModel(userService);
             var loginWindow = new LoginWindow();
@@ -42,6 +43,7 @@ namespace QuanLyPhongTro
                     contractService,
                     invoiceService,
                     occupantService,
+                    meterReadingService,
                     loggedInUser);
 
                 var mainWindow = new MainWindow(mainViewModel);

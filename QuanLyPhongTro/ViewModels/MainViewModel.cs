@@ -38,12 +38,14 @@ namespace QuanLyPhongTro.ViewModels
         private readonly IContractService _contractService;
         private readonly IInvoiceService _invoiceService;
         private readonly IOccupantService _occupantService;
+        private readonly IMeterReadingService _meterReadingService;
 
         public ICommand ShowRoomCommand { get; }
         public ICommand ShowTenantCommand { get; }
         public ICommand ShowContractCommand { get; }
         public ICommand ShowInvoiceCommand { get; }
         public ICommand LogoutCommand { get; }
+        public ICommand ShowMeterReadingCommand { get; }
 
         public event Action OnLogoutRequested;
 
@@ -53,6 +55,7 @@ namespace QuanLyPhongTro.ViewModels
             IContractService contractService,
             IInvoiceService invoiceService,
             IOccupantService occupantService,
+            IMeterReadingService meterReadingService,
             User loggedInUser)
         {
             _roomService = roomService;
@@ -60,6 +63,7 @@ namespace QuanLyPhongTro.ViewModels
             _contractService = contractService;
             _invoiceService = invoiceService;
             _occupantService = occupantService;
+            _meterReadingService = meterReadingService;
 
             CurrentUser = loggedInUser;
 
@@ -67,6 +71,7 @@ namespace QuanLyPhongTro.ViewModels
             ShowTenantCommand = new RelayCommand(ExecuteShowTenant);
             ShowContractCommand = new RelayCommand(ExecuteShowContract);
             ShowInvoiceCommand = new RelayCommand(ExecuteShowInvoice);
+            ShowMeterReadingCommand = new RelayCommand(ExecuteShowMeterReading);
 
             LogoutCommand = new RelayCommand(ExecuteLogout);
 
@@ -91,6 +96,12 @@ namespace QuanLyPhongTro.ViewModels
         private void ExecuteShowInvoice(object obj)
         {
             CurrentViewModel = new InvoiceViewModel(_invoiceService, _roomService);
+        }
+
+        private void ExecuteShowMeterReading(object obj)
+        {
+            // Đảm bảo bạn truyền đủ các Service mà MeterReadingViewModel cần
+            CurrentViewModel = new MeterReadingViewModel(_meterReadingService, _roomService);
         }
 
         // --- 7. LOGIC ĐĂNG XUẤT ---

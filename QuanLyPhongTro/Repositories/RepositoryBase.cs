@@ -17,7 +17,7 @@ namespace QuanLyPhongTro.Repositories
         public RepositoryBase(AppDbContext context)
         {
             _context = context;
-            _dbSet = context.Set<T>(); // Xác định xem đang làm việc với bảng nào
+            _dbSet = context.Set<T>(); 
         }
         public IEnumerable<T> GetAll() => _dbSet.ToList();
         public T GetById(int id) => _dbSet.Find(id);

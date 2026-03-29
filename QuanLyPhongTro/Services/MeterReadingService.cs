@@ -11,12 +11,14 @@ namespace QuanLyPhongTro.Services
     public class MeterReadingService : IMeterReadingService
     {
         private readonly IMeterReadingRepository _meterReadingRepository;
-        private readonly IRoomRepository _roomRepository; // Để kiểm tra phòng tồn tại không
+        private readonly IRoomRepository _roomRepository; 
+        private readonly IInvoiceRepository _invoiceRepository;
 
-        public MeterReadingService(IMeterReadingRepository meterReadingRepository, IRoomRepository roomRepository)
+        public MeterReadingService(IMeterReadingRepository meterReadingRepository, IRoomRepository roomRepository, IInvoiceRepository invoiceRepository)
         {
             _meterReadingRepository = meterReadingRepository;
             _roomRepository = roomRepository;
+            _invoiceRepository = invoiceRepository;
         }
 
         public IEnumerable<MeterReading> GetMeterReadingsByRoom(int roomId)
@@ -70,6 +72,13 @@ namespace QuanLyPhongTro.Services
         public bool UpdateMeterReading(MeterReading meterReading, out string errorMessage)
         {
             errorMessage= string.Empty;
+
+            var invoice = _invoiceRepository.GetInvoiceByRoomAndPeriod(meterReading.RoomId, meterReading.Month, meterReading.Year);
+            if (invoice != null)
+            {
+                errorMessage = $"Phòng này đã lập Hóa đơn cho tháng {meterReading.Month}/{meterReading.Year}.\nBẠN KHÔNG ĐƯỢC SỬA SỐ LIỆU GỐC!\nVui lòng qua tab Hóa Đơn, XÓA hóa đơn này đi trước khi sửa số điện/nước.";
+                return false;
+            }
 
             // Logic số mới >= số cũ
             if (meterReading.ElectricNew < meterReading.ElectricOld)

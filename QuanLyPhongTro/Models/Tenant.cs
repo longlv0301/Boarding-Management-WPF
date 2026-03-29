@@ -13,7 +13,8 @@ namespace QuanLyPhongTro.Models
         public string IdentityCard { get; set; }
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
-
+        public string LicensePlate { get; set; }
+        public bool IsContractOwner { get; set; } = true;
         public ICollection<Contract> Contracts { get; set; }
     }
 }

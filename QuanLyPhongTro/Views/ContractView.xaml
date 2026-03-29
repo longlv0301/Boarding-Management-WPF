@@ -1,0 +1,244 @@
+﻿<UserControl x:Class="QuanLyPhongTro.Views.ContractView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+
+    <Grid Margin="0,0,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="320"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Background="White" CornerRadius="10" Padding="20" Margin="0,0,20,0" BorderBrush="#E5E7EB" BorderThickness="1">
+            <StackPanel>
+                <TextBlock Text="THIẾT LẬP HỢP ĐỒNG" FontSize="20" FontWeight="Bold" Foreground="#1F2937" Margin="0,0,0,25"/>
+
+                <TextBlock Text="Chọn phòng:" FontWeight="SemiBold" Foreground="#4B5563" Margin="0,0,0,5"/>
+                <ComboBox ItemsSource="{Binding AvailableRooms}" SelectedItem="{Binding SelectedRoom}" 
+                          DisplayMemberPath="Name" Height="40" VerticalContentAlignment="Center" Padding="10,0" BorderBrush="#D1D5DB" Margin="0,0,0,15"/>
+
+                <TextBlock Text="Khách đại diện (Chủ HĐ):" FontWeight="SemiBold" Foreground="#4B5563" Margin="0,0,0,5"/>
+                <ComboBox ItemsSource="{Binding Tenants}" SelectedItem="{Binding SelectedTenant}" 
+                          DisplayMemberPath="FullName" Height="40" VerticalContentAlignment="Center" Padding="10,0" BorderBrush="#D1D5DB" Margin="0,0,0,15"/>
+
+                <TextBlock Text="Ngày bắt đầu:" FontWeight="SemiBold" Foreground="#4B5563" Margin="0,0,0,5"/>
+                <DatePicker SelectedDate="{Binding StartDate}" Height="40" VerticalContentAlignment="Center" BorderBrush="#D1D5DB" Margin="0,0,0,15"/>
+
+                <TextBlock Text="Ngày kết thúc:" FontWeight="SemiBold" Foreground="#4B5563" Margin="0,0,0,5"/>
+                <DatePicker SelectedDate="{Binding EndDate}" Height="40" VerticalContentAlignment="Center" BorderBrush="#D1D5DB" Margin="0,0,0,15"/>
+
+                <TextBlock Text="Tiền cọc (VNĐ):" FontWeight="SemiBold" Foreground="#4B5563" Margin="0,0,0,5"/>
+                <TextBox Text="{Binding DepositAmount, UpdateSourceTrigger=PropertyChanged}" 
+                         Height="40" Padding="10,0" VerticalContentAlignment="Center" BorderBrush="#D1D5DB" Margin="0,0,0,25"/>
+
+                <UniformGrid Columns="2" Rows="1" HorizontalAlignment="Stretch" Margin="0,0,0,10">
+                    <Button Content="Tạo HĐ" Command="{Binding CreateContractCommand}" 
+                            Height="40" Background="#10B981" Foreground="White" FontWeight="Bold" Margin="0,0,5,0" BorderThickness="0" Cursor="Hand"/>
+
+                    <Button Content="Làm mới" Command="{Binding ClearContractFormCommand}" 
+                            Height="40" Background="#9CA3AF" Foreground="White" FontWeight="Bold" Margin="5,0,0,0" BorderThickness="0" Cursor="Hand"/>
+                </UniformGrid>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.5*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Background="White" CornerRadius="10" Padding="20" Margin="0,0,0,15" BorderBrush="#E5E7EB" BorderThickness="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Margin="0,0,0,15">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="250"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="DANH SÁCH HỢP ĐỒNG" FontSize="20" FontWeight="Bold" Foreground="#1F2937" VerticalAlignment="Center"/>
+
+                        <Grid Grid.Column="2" Margin="0,0,15,0">
+                            <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
+                                     Height="35" Padding="10,0" VerticalContentAlignment="Center" BorderBrush="#D1D5DB"/>
+                            <TextBlock Text="🔍 Tìm Khách, Phòng, Mã..." Foreground="#9CA3AF" VerticalAlignment="Center" Margin="10,0,0,0" IsHitTestVisible="False">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SearchText}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding SearchText}" Value="">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+
+                        <Button Grid.Column="3" Content="Thanh lý HĐ đang chọn" Command="{Binding TerminateContractCommand}" 
+                                Padding="15,0" Height="35" Background="#EF4444" Foreground="White" FontWeight="Bold" BorderThickness="0" Cursor="Hand"/>
+                    </Grid>
+
+                    <DataGrid Grid.Row="1" ItemsSource="{Binding Contracts}" SelectedItem="{Binding SelectedContract}" 
+                              AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                              Background="White" RowHeight="40" ColumnHeaderHeight="45" BorderBrush="#E5E7EB">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Mã HĐ" Binding="{Binding Id}" Width="0.5*"/>
+                            <DataGridTextColumn Header="Phòng" Binding="{Binding Room.Name}" Width="*"/>
+                            <DataGridTextColumn Header="Khách thuê" Binding="{Binding Tenant.FullName}" Width="1.5*"/>
+                            <DataGridTextColumn Header="Tiền cọc" Binding="{Binding DepositAmout, StringFormat=\{0:N0\} VNĐ}" Width="*"/>
+                            <DataGridTextColumn Header="Hiệu lực" Binding="{Binding IsActive}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="1" Background="#F9FAFB" CornerRadius="10" Padding="20" BorderBrush="#E5E7EB" BorderThickness="1">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="IsEnabled" Value="True"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedContract}" Value="{x:Null}">
+                                <Setter Property="IsEnabled" Value="False"/>
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                        <TextBlock Text="THÊM NHÂN KHẨU" FontSize="16" FontWeight="Bold" Foreground="#1F2937" Margin="0,0,0,15"/>
+
+                        <TextBox Text="{Binding OccFullName, UpdateSourceTrigger=PropertyChanged}" Height="35" Padding="10,0" VerticalContentAlignment="Center" BorderBrush="#D1D5DB" Margin="0,0,0,10"/>
+                        <TextBlock Text="Họ và tên" Foreground="#9CA3AF" Margin="12,-35,0,15" IsHitTestVisible="False">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding OccFullName}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding OccFullName}" Value="">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <TextBox Text="{Binding OccIdentityCard, UpdateSourceTrigger=PropertyChanged}" Height="35" Padding="10,0" VerticalContentAlignment="Center" BorderBrush="#D1D5DB" Margin="0,0,0,10"/>
+                        <TextBlock Text="Căn cước công dân" Foreground="#9CA3AF" Margin="12,-35,0,15" IsHitTestVisible="False">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding OccIdentityCard}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding OccIdentityCard}" Value="">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <TextBox Text="{Binding OccPhoneNumber, UpdateSourceTrigger=PropertyChanged}" Height="35" Padding="10,0" VerticalContentAlignment="Center" BorderBrush="#D1D5DB" Margin="0,0,0,10"/>
+                        <TextBlock Text="Số điện thoại" Foreground="#9CA3AF" Margin="12,-35,0,15" IsHitTestVisible="False">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding OccPhoneNumber}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding OccPhoneNumber}" Value="">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <TextBox Text="{Binding OccLicensePlate, UpdateSourceTrigger=PropertyChanged}" Height="35" Padding="10,0" VerticalContentAlignment="Center" BorderBrush="#D1D5DB" Margin="0,0,0,10"/>
+                        <TextBlock Text="Biển số xe" Foreground="#9CA3AF" Margin="12,-35,0,15" IsHitTestVisible="False">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding OccLicensePlate}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding OccLicensePlate}" Value="">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <TextBox Text="{Binding OccAddress, UpdateSourceTrigger=PropertyChanged}" Height="35" Padding="10,0" VerticalContentAlignment="Center" BorderBrush="#D1D5DB" Margin="0,0,0,10"/>
+                        <TextBlock Text="Địa chỉ quê quán" Foreground="#9CA3AF" Margin="12,-35,0,15" IsHitTestVisible="False">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding OccAddress}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding OccAddress}" Value="">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <Button Content="Thêm nhân khẩu" Command="{Binding AddOccupantCommand}" 
+                                Height="35" Background="#3B82F6" Foreground="White" FontWeight="Bold" BorderThickness="0" Cursor="Hand" Margin="0,5,0,0"/>
+                    </StackPanel>
+
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" Margin="0,0,0,15">
+                            <TextBlock Text="DANH SÁCH NGƯỜI ĐANG Ở" FontSize="16" FontWeight="Bold" Foreground="#1F2937" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                            <Button Content="Xóa người chọn" Command="{Binding RemoveOccupantCommand}" HorizontalAlignment="Right"
+                                    Padding="10,5" Background="#EF4444" Foreground="White" FontWeight="Bold" BorderThickness="0" Cursor="Hand"/>
+                        </Grid>
+
+                        <DataGrid Grid.Row="1" ItemsSource="{Binding CurrentOccupants}" SelectedItem="{Binding SelectedOccupant}" 
+                                  AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                                  Background="White" RowHeight="35" ColumnHeaderHeight="40" BorderBrush="#E5E7EB">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Họ tên" Binding="{Binding FullName}" Width="*"/>
+                                <DataGridTextColumn Header="CCCD" Binding="{Binding IdentifyCard}" Width="*"/>
+                                <DataGridTextColumn Header="SĐT" Binding="{Binding PhoneNumber}" Width="*"/>
+                                <DataGridTextColumn Header="Biển số xe" Binding="{Binding LicensePlate}" Width="*"/>
+                                <DataGridCheckBoxColumn Header="Là Chủ HĐ" Binding="{Binding IsContractOwner}" Width="0.8*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

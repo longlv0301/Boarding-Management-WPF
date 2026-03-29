@@ -23,7 +23,7 @@ namespace QuanLyPhongTro.Services
 
         public IEnumerable<Invoice> GetAllInvoices()
         {
-            return _invoiceRepository.GetAll();
+            return _invoiceRepository.GetAllInvoicesWithDetails();
         }
 
         public IEnumerable<Invoice> GetUnpaidInvoices()
@@ -109,6 +109,28 @@ namespace QuanLyPhongTro.Services
             invoice.PaidDate = DateTime.Now;
 
             _invoiceRepository.Update(invoice);
+            _invoiceRepository.SaveChanges();
+            return true;
+        }
+
+        public bool DeleteInvoice(int invoiceId, out string errorMessage)
+        {
+            errorMessage = string.Empty;
+            var invoice = _invoiceRepository.GetById(invoiceId);
+
+            if (invoice == null)
+            {
+                errorMessage = "Hóa đơn không tồn tại!";
+                return false;
+            }
+
+            if (invoice.IsPaid)
+            {
+                errorMessage = "Hóa đơn ĐÃ THU TIỀN thì không được phép xóa! Vui lòng hoàn tiền trước.";
+                return false;
+            }
+
+            _invoiceRepository.Delete(invoice);
             _invoiceRepository.SaveChanges();
             return true;
         }

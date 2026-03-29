@@ -5,8 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -18,6 +16,8 @@ namespace QuanLyPhongTro.ViewModels
         private readonly IRoomService _roomService;
         private readonly ITenantService _tenantService;
         private readonly IOccupantService _occupantService;
+
+        private List<Contract> _allContracts;
 
         private ObservableCollection<Contract> _contracts;
         public ObservableCollection<Contract> Contracts
@@ -45,6 +45,18 @@ namespace QuanLyPhongTro.ViewModels
         {
             get { return _currentOccupants; }
             set { _currentOccupants = value; OnPropertyChanged(); }
+        }
+
+        private string _searchText;
+        public string SearchText
+        {
+            get { return _searchText; }
+            set
+            {
+                _searchText = value;
+                OnPropertyChanged();
+                ApplyFilter(); 
+            }
         }
 
         private Room _selectedRoom;
@@ -103,44 +115,26 @@ namespace QuanLyPhongTro.ViewModels
         }
 
         private string _occFullName;
-        public string OccFullName
-        {
-            get { return _occFullName; }
-            set { _occFullName = value; OnPropertyChanged(); }
-        }
+        public string OccFullName { get => _occFullName; set { _occFullName = value; OnPropertyChanged(); } }
 
         private string _occIdentityCard;
-        public string OccIdentityCard
-        {
-            get { return _occIdentityCard; }
-            set { _occIdentityCard = value; OnPropertyChanged(); }
-        }
+        public string OccIdentityCard { get => _occIdentityCard; set { _occIdentityCard = value; OnPropertyChanged(); } }
 
         private string _occPhoneNumber;
-        public string OccPhoneNumber
-        {
-            get { return _occPhoneNumber; }
-            set { _occPhoneNumber = value; OnPropertyChanged(); }
-        }
+        public string OccPhoneNumber { get => _occPhoneNumber; set { _occPhoneNumber = value; OnPropertyChanged(); } }
 
         private string _occLicensePlate;
-        public string OccLicensePlate
-        {
-            get { return _occLicensePlate; }
-            set { _occLicensePlate = value; OnPropertyChanged(); }
-        }
+        public string OccLicensePlate { get => _occLicensePlate; set { _occLicensePlate = value; OnPropertyChanged(); } }
+
+        private string _occAddress;
+        public string OccAddress { get => _occAddress; set { _occAddress = value; OnPropertyChanged(); } }
 
         private Occupant _selectedOccupant;
-        public Occupant SelectedOccupant
-        {
-            get { return _selectedOccupant; }
-            set { _selectedOccupant = value; OnPropertyChanged(); }
-        }
+        public Occupant SelectedOccupant { get => _selectedOccupant; set { _selectedOccupant = value; OnPropertyChanged(); } }
 
         public ICommand CreateContractCommand { get; }
         public ICommand TerminateContractCommand { get; }
         public ICommand ClearContractFormCommand { get; }
-
         public ICommand AddOccupantCommand { get; }
         public ICommand RemoveOccupantCommand { get; }
 
@@ -167,15 +161,41 @@ namespace QuanLyPhongTro.ViewModels
 
         public void LoadInitialData()
         {
-            Contracts = new ObservableCollection<Contract>(_contractService.GetAllContracts());
-            AvailableRooms = new ObservableCollection<Room>(_roomService.GetAvailableRooms());
-            Tenants = new ObservableCollection<Tenant>(_tenantService.GetAllTenants());
+            var data = _contractService.GetAllContracts();
+            if (data != null) _allContracts = data.ToList();
+            else _allContracts = new List<Contract>();
+
+            var rooms = _roomService.GetAvailableRooms();
+            if (rooms != null) AvailableRooms = new ObservableCollection<Room>(rooms);
+
+            var tenants = _tenantService.GetAllTenants();
+            if (tenants != null) Tenants = new ObservableCollection<Tenant>(tenants);
+
+            ApplyFilter();
+        }
+
+        private void ApplyFilter()
+        {
+            if (_allContracts == null) return;
+
+            var filteredList = _allContracts.AsEnumerable();
+
+            if (!string.IsNullOrWhiteSpace(SearchText))
+            {
+                string searchLower = SearchText.ToLower();
+                filteredList = filteredList.Where(c =>
+                    c.Id.ToString().Contains(searchLower) ||
+                    (c.Room != null && c.Room.Name != null && c.Room.Name.ToLower().Contains(searchLower)) ||
+                    (c.Tenant != null && c.Tenant.FullName != null && c.Tenant.FullName.ToLower().Contains(searchLower))
+                );
+            }
+            Contracts = new ObservableCollection<Contract>(filteredList);
         }
 
         public void LoadOccupants(int contractId)
         {
             var data = _occupantService.GetOccupantsByContract(contractId);
-            CurrentOccupants = new ObservableCollection<Occupant>(data);
+            if (data != null) CurrentOccupants = new ObservableCollection<Occupant>(data);
         }
 
         private bool CanExecuteCreateContract(object obj)
@@ -199,7 +219,7 @@ namespace QuanLyPhongTro.ViewModels
             if (isSuccess)
             {
                 MessageBox.Show("Tạo hợp đồng thành công!", "Thông báo");
-                LoadInitialData(); 
+                LoadInitialData();
                 ExecuteClearContractForm(null);
             }
             else
@@ -215,18 +235,14 @@ namespace QuanLyPhongTro.ViewModels
 
         private void ExecuteTerminateContract(object obj)
         {
-            var confirm = MessageBox.Show(
-                $"Bạn có chắc chắn muốn thanh lý hợp đồng này không?",
-                "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-
+            var confirm = MessageBox.Show($"Bạn có chắc chắn muốn thanh lý hợp đồng này không?", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (confirm == MessageBoxResult.Yes)
             {
                 bool isSuccess = _contractService.TerminateContract(SelectedContract.Id, out string error);
-
                 if (isSuccess)
                 {
                     MessageBox.Show("Thanh lý thành công!", "Thông báo");
-                    LoadInitialData(); 
+                    LoadInitialData();
                     SelectedContract = null;
                 }
                 else
@@ -247,10 +263,10 @@ namespace QuanLyPhongTro.ViewModels
 
         private bool CanExecuteAddOccupant(object obj)
         {
-            return SelectedContract != null &&
-                   SelectedContract.IsActive &&
+            return SelectedContract != null && SelectedContract.IsActive &&
                    !string.IsNullOrWhiteSpace(OccFullName) &&
-                   !string.IsNullOrWhiteSpace(OccIdentityCard);
+                   !string.IsNullOrWhiteSpace(OccIdentityCard) &&
+                   !string.IsNullOrWhiteSpace(OccAddress); 
         }
 
         private void ExecuteAddOccupant(object obj)
@@ -261,7 +277,7 @@ namespace QuanLyPhongTro.ViewModels
                 FullName = OccFullName,
                 IdentifyCard = OccIdentityCard,
                 PhoneNumber = OccPhoneNumber,
-                LicensePlate = OccLicensePlate,
+                LicensePlate = string.IsNullOrWhiteSpace(OccLicensePlate) ? "" : OccLicensePlate,
                 IsContractOwner = false
             };
 
@@ -269,10 +285,38 @@ namespace QuanLyPhongTro.ViewModels
 
             if (isSuccess)
             {
-                MessageBox.Show("Thêm người ở ghép thành công!", "Thông báo");
-                LoadOccupants(SelectedContract.Id); 
+                var existingTenant = Tenants.FirstOrDefault(t => t.IdentityCard == OccIdentityCard);
 
-                OccFullName = ""; OccIdentityCard = ""; OccPhoneNumber = ""; OccLicensePlate = "";
+                if (existingTenant == null)
+                {
+                    var newTenant = new Tenant
+                    {
+                        FullName = OccFullName,
+                        IdentityCard = OccIdentityCard,
+                        PhoneNumber = OccPhoneNumber,
+                        Address = OccAddress,
+                        LicensePlate = string.IsNullOrWhiteSpace(OccLicensePlate) ? "" : OccLicensePlate, 
+                        IsContractOwner = false 
+                    };
+
+                    _tenantService.AddTenant(newTenant, out string tenantError);
+
+                    var tenants = _tenantService.GetAllTenants();
+                    if (tenants != null)
+                    {
+                        Tenants = new ObservableCollection<Tenant>(tenants);
+                    }
+                }
+    
+                MessageBox.Show("Thêm người ở ghép thành công!", "Thông báo");
+
+                LoadOccupants(SelectedContract.Id);
+
+                OccFullName = string.Empty;
+                OccIdentityCard = string.Empty;
+                OccPhoneNumber = string.Empty;
+                OccLicensePlate = string.Empty;
+                OccAddress = string.Empty;
             }
             else
             {

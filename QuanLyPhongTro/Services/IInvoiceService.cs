@@ -14,10 +14,10 @@ namespace QuanLyPhongTro.Services
         IEnumerable<Invoice> GetUnpaidInvoices();
         IEnumerable<Invoice> GetInvoicesByRoom(int roomId);
 
-        // Tự động tính toán và tạo hóa đơn
         bool CreateInvoice(int roomId, int month, int year, decimal electricPrice, decimal waterPrice, decimal otherFees, out string errorMessage);
-
+        bool DeleteInvoice(int invoiceId, out string errorMessage);
         // Xác nhận khách đã đóng tiền
         bool PayInvoice(int invoiceId, out string errorMessage);
+
     }
 }

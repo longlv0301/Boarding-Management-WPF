@@ -53,6 +53,12 @@ namespace QuanLyPhongTro.ViewModels
             set { _address = value; OnPropertyChanged(); }
         }
 
+        private string _licensePlate;
+        public string LicensePlate { get => _licensePlate; set { _licensePlate = value; OnPropertyChanged(); } }
+
+        private bool _isContractOwner = true; 
+        public bool IsContractOwner { get => _isContractOwner; set { _isContractOwner = value; OnPropertyChanged(); } }
+
         private Tenant _selectedTenant;
         public Tenant SelectedTenant
         {
@@ -60,12 +66,14 @@ namespace QuanLyPhongTro.ViewModels
             set
             {
                 _selectedTenant = value; OnPropertyChanged();
-                if(_selectedTenant != null)
+                if (_selectedTenant != null)
                 {
                     FullName = _selectedTenant.FullName;
                     IdentityCard = _selectedTenant.IdentityCard;
                     PhoneNumber = _selectedTenant.PhoneNumber;
                     Address = _selectedTenant.Address;
+                    LicensePlate = _selectedTenant.LicensePlate; 
+                    IsContractOwner = _selectedTenant.IsContractOwner; 
                 }
             }
         }
@@ -134,7 +142,9 @@ namespace QuanLyPhongTro.ViewModels
                 FullName = FullName,
                 IdentityCard = IdentityCard,
                 PhoneNumber = PhoneNumber,
-                Address = Address
+                Address = Address,
+                LicensePlate = string.IsNullOrWhiteSpace(LicensePlate) ? "" : LicensePlate, 
+                IsContractOwner = IsContractOwner 
             };
 
             bool isSuccess = _tenantService.AddTenant(newTenant, out string error);
@@ -166,6 +176,8 @@ namespace QuanLyPhongTro.ViewModels
             SelectedTenant.IdentityCard = IdentityCard;
             SelectedTenant.PhoneNumber = PhoneNumber;
             SelectedTenant.Address = Address;
+            SelectedTenant.LicensePlate = LicensePlate; 
+            SelectedTenant.IsContractOwner = IsContractOwner; 
 
             bool isSuccess = _tenantService.UpdateTenant(SelectedTenant, out string error);
 
@@ -188,6 +200,8 @@ namespace QuanLyPhongTro.ViewModels
             IdentityCard = string.Empty;
             PhoneNumber = string.Empty;
             Address = string.Empty;
+            LicensePlate = string.Empty;
+            IsContractOwner = true; 
         }
 
 

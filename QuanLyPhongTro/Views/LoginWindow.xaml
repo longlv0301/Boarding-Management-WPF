@@ -36,7 +36,7 @@
 
                     <TextBlock Text="Create Initial Admin:" Foreground="#10B981" FontWeight="Bold" Margin="0,0,0,10"/>
                     <Grid Margin="0,0,0,20">
-                        <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Height="45" Padding="15,0" Margin="0,0,0,15" VerticalContentAlignment="Center" BorderBrush="#D1D5D8" FontSize="14"/>
+                        <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Height="45" Padding="15,0" VerticalContentAlignment="Center" BorderBrush="#D1D5D8" FontSize="14"/>
                         <TextBlock Text="Fullname" Foreground="#9CA3AF" FontSize="14" VerticalAlignment="Center" Margin="17,0,0,0" IsHitTestVisible="False">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">

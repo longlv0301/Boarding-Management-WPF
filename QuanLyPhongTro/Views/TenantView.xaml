@@ -26,6 +26,16 @@
                 <TextBox Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}" 
          Height="40" Padding="10,0" VerticalContentAlignment="Center" BorderBrush="#D1D5DB" Margin="0,0,0,25"/>
 
+                <TextBlock Text="Biển số xe:" FontWeight="SemiBold" Foreground="#4B5563" Margin="0,0,0,5"/>
+                <TextBox Text="{Binding LicensePlate, UpdateSourceTrigger=PropertyChanged}" Height="40" Padding="10,0" VerticalContentAlignment="Center" BorderBrush="#D1D5DB" Margin="0,0,0,25"/>
+
+                <CheckBox Content="Là chủ hợp đồng (Chủ hộ)" IsChecked="{Binding IsContractOwner}" 
+          FontWeight="SemiBold" Foreground="#4B5563" Margin="0,0,0,25" VerticalAlignment="Center">
+                    <CheckBox.LayoutTransform>
+                        <ScaleTransform ScaleX="1.1" ScaleY="1.1" />
+                    </CheckBox.LayoutTransform>
+                </CheckBox>
+
                 <UniformGrid Columns="2" Rows="1" HorizontalAlignment="Stretch" Margin="0,0,0,10">
                     <Button Content="Thêm mới" Command="{Binding AddCommand}" Height="40" Background="#10B981" Foreground="White" FontWeight="Bold" Margin="0,0,5,0" BorderThickness="0" Cursor="Hand"/>
 
@@ -78,9 +88,11 @@
                           Background="White" RowHeight="40" ColumnHeaderHeight="45" BorderBrush="#E5E7EB">
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Họ và tên" Binding="{Binding FullName}" Width="*"/>
+                        <DataGridTextColumn Header="Họ và tên" Binding="{Binding FullName}" Width="1.5*"/>
                         <DataGridTextColumn Header="Căn cước công dân" Binding="{Binding IdentityCard}" Width="*"/>
                         <DataGridTextColumn Header="Số điện thoại" Binding="{Binding PhoneNumber}" Width="*"/>
+                        <DataGridTextColumn Header="Biển số xe" Binding="{Binding LicensePlate}" Width="*"/>
+                        <DataGridCheckBoxColumn Header="Là Chủ hộ" Binding="{Binding IsContractOwner}" Width="0.8*"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
