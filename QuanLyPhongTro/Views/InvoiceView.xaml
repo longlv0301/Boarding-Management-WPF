@@ -69,12 +69,12 @@
                           Background="White" RowHeight="40" ColumnHeaderHeight="45" BorderBrush="#E5E7EB">
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Mã" Binding="{Binding Id}" Width="0.5*"/>
-                        <DataGridTextColumn Header="Phòng" Binding="{Binding Room.Name}" Width="*"/>
-                        <DataGridTextColumn Header="Tháng" Binding="{Binding Month, StringFormat=\{0:D2\}}" Width="0.6*"/>
-                        <DataGridTextColumn Header="Năm" Binding="{Binding Year}" Width="0.8*"/>
+                        <DataGridTextColumn Header="Mã" Binding="{Binding Id}" Width="0.55*"/>
+                        <DataGridTextColumn Header="Phòng" Binding="{Binding Room.Name}" Width="0.7*"/>
+                        <DataGridTextColumn Header="Tháng" Binding="{Binding Month, StringFormat=\{0:D2\}}" Width="0.7*"/>
+                        <DataGridTextColumn Header="Năm" Binding="{Binding Year}" Width="0.7*"/>
                         <DataGridTextColumn Header="Tiền phòng" Binding="{Binding RoomFee, StringFormat=\{0:N0\}}" Width="*"/>
-                        <DataGridTextColumn Header="Tiền điện" Binding="{Binding ElectricFee, StringFormat=\{0:N0\}}" Width="*"/>
+                        <DataGridTextColumn Header="Tiền điện" Binding="{Binding ElectricFee, StringFormat=\{0:N0\}}" Width="0.9*"/>
                         <DataGridTextColumn Header="Tiền nước" Binding="{Binding WaterFee, StringFormat=\{0:N0\}}" Width="*"/>
                         <DataGridTextColumn Header="Phụ phí" Binding="{Binding OtherFees, StringFormat=\{0:N0\}}" Width="*"/>
 
