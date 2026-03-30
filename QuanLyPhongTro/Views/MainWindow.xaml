@@ -1,13 +1,25 @@
 ﻿<Window x:Class="QuanLyPhongTro.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        
         xmlns:local="clr-namespace:QuanLyPhongTro.Views"
         xmlns:viewmodels="clr-namespace:QuanLyPhongTro.ViewModels"
-        
-        Title="Phần Mềm Quản Lý Phòng Trọ - DEVOLT" Height="768" Width="1024"
-        WindowStartupLocation="CenterScreen" Background="#F3F4F6">
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="14"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Title="Phần Mềm Quản Lý Phòng Trọ - DEVOLT"
+        Height="768" Width="1200"
+        MinHeight="600" MinWidth="900"
+        WindowStartupLocation="CenterScreen"
+        Background="#F1F5F9"
+        WindowStyle="None"
+        AllowsTransparency="True">
+
     <Window.Resources>
+
         <DataTemplate DataType="{x:Type viewmodels:RoomViewModel}">
             <local:RoomView />
         </DataTemplate>
@@ -23,89 +35,338 @@
         <DataTemplate DataType="{x:Type viewmodels:MeterReadingViewModel}">
             <local:MeterReadingView />
         </DataTemplate>
+
+        <Style x:Key="NavButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#94A3B8"/>
+            <Setter Property="Height" Value="52"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="16,3"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBorder"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="12"
+                                Padding="16,0">
+                            <ContentPresenter VerticalAlignment="Center"
+                                              HorizontalAlignment="Left"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#1E293B"/>
+                                <Setter Property="Foreground" Value="#E2E8F0"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#0F172A"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="NavButtonActiveStyle" TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Rectangle Width="4" HorizontalAlignment="Left"
+                                       RadiusX="2" RadiusY="2">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Color="#10B981" Offset="0"/>
+                                        <GradientStop Color="#059669" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <Border x:Name="ButtonBorder"
+                                    Margin="6,0,0,0"
+                                    CornerRadius="12"
+                                    Padding="16,0">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                        <GradientStop Color="#1E3A2F" Offset="0"/>
+                                        <GradientStop Color="#172A21" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <ContentPresenter VerticalAlignment="Center"
+                                                  HorizontalAlignment="Left"/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="NavIconStyle" TargetType="materialDesign:PackIcon">
+            <Setter Property="Width" Value="20"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Margin" Value="0,0,14,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="StatCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="Padding" Value="20,16"/>
+            <Setter Property="Margin" Value="6,0"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="#CBD5E1" BlurRadius="20" ShadowDepth="2" Opacity="0.4"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ChromeButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="36"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#64748B"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#F1F5F9"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ChromeCloseButtonStyle" TargetType="Button" BasedOn="{StaticResource ChromeButtonStyle}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FEE2E2"/>
+                    <Setter Property="Foreground" Value="#EF4444"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
     </Window.Resources>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        
-        <Border Grid.Column="0" Background="#1F2937">
-            <StackPanel Margin="0,30,0,0">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,50">
-                    <TextBlock Text="⠿ " FontSize="26" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" />
-                    <TextBlock Text="DEVOLT" FontSize="24" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
-                </StackPanel>
 
-                <Button Content="QUẢN LÝ PHÒNG" Command="{Binding ShowRoomCommand}" Background="LightGray" BorderThickness="0" FontSize="15" Padding="20,15" HorizontalContentAlignment="Left" Cursor="Hand"/>
-                <Button Content="KHÁCH THUÊ" Command="{Binding ShowTenantCommand}" Background="LightGray" BorderThickness="0" FontSize="15" Padding="20,15" HorizontalContentAlignment="Left" Cursor="Hand"/>
-                <Button Content="HỢP ĐỒNG" Command="{Binding ShowContractCommand}" Background="LightGray" BorderThickness="0" FontSize="15" Padding="20,15" HorizontalContentAlignment="Left" Cursor="Hand"/>
-                <Button Content="HÓA ĐƠN" Command="{Binding ShowInvoiceCommand}" Background="LightGray" BorderThickness="0" FontSize="15" Padding="20,15" HorizontalContentAlignment="Left"/>
-                <Button Content="CHỐT ĐIỆN NƯỚC" Command="{Binding ShowMeterReadingCommand}" Background="LightGray" BorderThickness="0" FontSize="15" Padding="20,15" HorizontalContentAlignment="Left"/>
-            </StackPanel>
-        </Border>
+    <Border CornerRadius="16" Background="#F1F5F9">
+        <Border.Effect>
+            <DropShadowEffect Color="#1E293B" BlurRadius="40" ShadowDepth="8" Opacity="0.25"/>
+        </Border.Effect>
 
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="70"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="260"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-            <Border Grid.Row="0" Background="White" BorderBrush="#E5E7EB" BorderThickness="0,0,0,1" Padding="25,0">
-    <Grid>
-        
-        <TextBlock Text="BẢNG ĐIỀU KHIỂN" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="#1F2937" HorizontalAlignment="Left"/>
+            <Border Grid.Column="0" CornerRadius="16,0,0,16">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#0F172A" Offset="0"/>
+                        <GradientStop Color="#1E293B" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
 
-        <Grid HorizontalAlignment="Right" VerticalAlignment="Center">
-            
-            <ToggleButton x:Name="btnProfile" Cursor="Hand" Background="Transparent" BorderThickness="0">
-                <ToggleButton.Template>
-                    <ControlTemplate TargetType="ToggleButton">
-                        
-                        <Border Background="#F9FAFB" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="25" Padding="6,6,15,6">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                
-                                <Border Width="32" Height="32" CornerRadius="16" Background="#D1D5DB" Margin="0,0,10,0">
-                                    <TextBlock Text="👤" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
+                <Grid>
+                    <Ellipse Width="300" Height="300"
+                             HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                             Margin="0,0,-120,-120" Opacity="0.04">
+                        <Ellipse.Fill>
+                            <RadialGradientBrush>
+                                <GradientStop Color="#10B981" Offset="0"/>
+                                <GradientStop Color="Transparent" Offset="1"/>
+                            </RadialGradientBrush>
+                        </Ellipse.Fill>
+                    </Ellipse>
+
+                    <StackPanel>
+                        <Border Margin="24,28,24,0" Padding="16,14" CornerRadius="14">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="#064E3B" Offset="0"/>
+                                    <GradientStop Color="#065F46" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Border Width="38" Height="38" CornerRadius="10" Margin="0,0,12,0">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                            <GradientStop Color="#10B981" Offset="0"/>
+                                            <GradientStop Color="#059669" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <materialDesign:PackIcon Kind="Domain" Width="22" Height="22" Foreground="White"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
                                 </Border>
-                                
-                                <TextBlock VerticalAlignment="Center" Foreground="#374151" FontWeight="SemiBold" FontSize="14">
-                                    <Run Text="{Binding CurrentUser.FullName}"/>
-                                    <Run Text=" - "/>
-                                    <Run Text="{Binding CurrentUser.Role}"/>
-                                </TextBlock>
-                                
-                                <TextBlock Text="▼" FontSize="10" Foreground="#9CA3AF" VerticalAlignment="Center" Margin="10,2,0,0"/>
-                                
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="DEVOLT" FontSize="20" FontWeight="Black"
+                                               Foreground="White"/>
+                                    <TextBlock Text="Workspace Pro" FontSize="10"
+                                               Foreground="#6EE7B7"/>
+                                </StackPanel>
                             </StackPanel>
                         </Border>
-                    </ControlTemplate>
-                </ToggleButton.Template>
-            </ToggleButton>
 
-                        <Popup IsOpen="{Binding IsChecked, ElementName=btnProfile}"             StaysOpen="False" AllowsTransparency="True" PlacementTarget="{Binding ElementName=btnProfile}" Placement="Bottom" VerticalOffset="5">
-                            <Border Width="{Binding ActualWidth, ElementName=btnProfile}" 
-                              Background="White" BorderBrush="#E5E7EB" BorderThickness="1" 
-                              CornerRadius="12" Padding="5">
+                        <TextBlock Text="ĐIỀU HƯỚNG" FontSize="10" FontWeight="Bold"
+                                   Foreground="#475569" 
+                                   Margin="30,28,0,10"/>
 
-                                <Border.Effect>
-                                    <DropShadowEffect Color="Black" Opacity="0.1" BlurRadius="10" ShadowDepth="2"/>
-                                </Border.Effect>
+                        <Button Command="{Binding ShowRoomCommand}" Style="{StaticResource NavButtonStyle}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="BedOutline" Style="{StaticResource NavIconStyle}"/>
+                                <TextBlock Text="Quản Lý Phòng" VerticalAlignment="Center"
+                                           FontSize="13" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Button>
 
-                                <Button Command="{Binding LogoutCommand}" Background="Transparent" BorderThickness="0" Cursor="Hand" Padding="10">
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <TextBlock Text="🚪" Margin="0,0,10,0"/>
-                                        <TextBlock Text="Đăng xuất" Foreground="#EF4444" FontWeight="Bold"/>
-                                    </StackPanel>
-                                </Button>
+                        <Button Command="{Binding ShowTenantCommand}" Style="{StaticResource NavButtonStyle}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="AccountMultipleOutline" Style="{StaticResource NavIconStyle}"/>
+                                <TextBlock Text="Khách Thuê" VerticalAlignment="Center"
+                                           FontSize="13" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Command="{Binding ShowContractCommand}" Style="{StaticResource NavButtonStyle}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="FileDocumentEditOutline" Style="{StaticResource NavIconStyle}"/>
+                                <TextBlock Text="Hợp Đồng" VerticalAlignment="Center"
+                                           FontSize="13" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Command="{Binding ShowMeterReadingCommand}" Style="{StaticResource NavButtonStyle}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Speedometer" Style="{StaticResource NavIconStyle}"/>
+                                <TextBlock Text="Chốt Điện Nước" VerticalAlignment="Center"
+                                           FontSize="13" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Command="{Binding ShowInvoiceCommand}" Style="{StaticResource NavButtonStyle}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="ReceiptTextOutline" Style="{StaticResource NavIconStyle}"/>
+                                <TextBlock Text="Hóa Đơn" VerticalAlignment="Center"
+                                           FontSize="13" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+
+                    <Border VerticalAlignment="Bottom" Margin="16,0,16,20"
+                            Background="#1E293B" CornerRadius="14" Padding="14,12">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.2"/>
+                        </Border.Effect>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Width="38" Height="38" CornerRadius="19" Margin="0,0,10,0">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#10B981" Offset="0"/>
+                                        <GradientStop Color="#3B82F6" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <materialDesign:PackIcon Kind="AccountCircle" Width="24" Height="24" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
-                        </Popup>
 
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding CurrentUser.FullName}"
+                                           Foreground="White" FontSize="13" FontWeight="SemiBold"
+                                           TextTrimming="CharacterEllipsis"/>
+                                <TextBlock Text="{Binding CurrentUser.Role}"
+                                           Foreground="#64748B" FontSize="11"/>
+                            </StackPanel>
+
+                            <Button Grid.Column="2" Command="{Binding LogoutCommand}"
+                                    Style="{StaticResource ChromeButtonStyle}"
+                                    ToolTip="Đăng xuất">
+                                <materialDesign:PackIcon Kind="LogoutVariant" Width="18" Height="18"
+                                                         Foreground="#EF4444"/>
+                            </Button>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Background="Transparent" Height="38"
+                        MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                                VerticalAlignment="Center" Margin="0,0,10,0">
+                        <Button x:Name="MinimizeButton" Style="{StaticResource ChromeButtonStyle}"
+                                Click="MinimizeButton_Click">
+                            <materialDesign:PackIcon Kind="WindowMinimize" Width="14" Height="14"/>
+                        </Button>
+                        <Button x:Name="MaximizeButton" Style="{StaticResource ChromeButtonStyle}"
+                                Click="MaximizeButton_Click" Margin="2,0">
+                            <materialDesign:PackIcon Kind="WindowMaximize" Width="14" Height="14"/>
+                        </Button>
+                        <Button x:Name="CloseButton" Style="{StaticResource ChromeCloseButtonStyle}"
+                                Click="CloseButton_Click">
+                            <materialDesign:PackIcon Kind="WindowClose" Width="14" Height="14"/>
+                        </Button>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="1" Margin="20,0,20,0" CornerRadius="16" Padding="24,18">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#0F172A" Offset="0"/>
+                            <GradientStop Color="#134E4A" Offset="0.6"/>
+                            <GradientStop Color="#065F46" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Border.Effect>
+                        <DropShadowEffect Color="#10B981" BlurRadius="24" ShadowDepth="0" Opacity="0.15"/>
+                    </Border.Effect>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock FontSize="24" FontWeight="Bold" Foreground="White">
+                                    <Run Text="Xin chào,"/>
+                                    <Run Text="{Binding CurrentUser.FullName, StringFormat=' {0}'}"/>
+                                    <Run Text="👋"/>
+                                </TextBlock>
+                            </StackPanel>
+                            <TextBlock Text="Chào mừng bạn đến với DEVOLT Workspace."
+                                       FontSize="13" Foreground="#6EE7B7" FontWeight="Regular"/>
+                        </StackPanel>
                     </Grid>
-    </Grid>
-</Border>
-
-            <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}" Margin="20"/>
+                </Border>
+                
+                <Border Grid.Row="2" Margin="20,16,20,20" CornerRadius="16"
+                        Background="White" Padding="0">
+                    <Border.Effect>
+                        <DropShadowEffect Color="#CBD5E1" BlurRadius="24" ShadowDepth="2" Opacity="0.3"/>
+                    </Border.Effect>
+                    <ContentControl Content="{Binding CurrentViewModel}" Margin="6"/>
+                </Border>
+            </Grid>
         </Grid>
-    </Grid>
+    </Border>
 </Window>
